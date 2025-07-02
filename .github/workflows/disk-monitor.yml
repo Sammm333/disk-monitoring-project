@@ -1,0 +1,49 @@
+# .github/workflows/disk-monitor.yml
+name: Disk Monitor CI
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    - cron: "0 * * * *"   # каждый час на нулевой минуте
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc python3-dev
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run disk monitor
+        run: |
+          python disk_monitor.py
+
+      - name: Verify log exists
+        run: |
+          if [ ! -f disk_usage.log ]; then
+            echo "ERROR: disk_usage.log not found" >&2
+            exit 1
+          fi
+
+      - name: Upload disk_usage.log
+        uses: actions/upload-artifact@v4
+        with:
+          name: disk-usage-log
+          path: disk_usage.log
