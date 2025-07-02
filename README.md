@@ -1,51 +1,58 @@
-Disk Monitor
-A simple Python-based tool for monitoring disk space, packaged in a Docker container and automated with GitHub Actions. The script checks free disk space, logs results to disk_usage.log, and issues warnings if free space falls below 20%. Built to demonstrate Python scripting and DevOps automation skills.
-Features
+# 💽 Disk Monitor
 
-Monitors disk space using the psutil library.
-Logs disk usage with timestamps to disk_usage.log.
-Alerts when free space is below 20%.
-Runs in a Docker container for portability.
-Automated execution via GitHub Actions on a schedule.
+A simple Python-based tool for monitoring disk space, packaged in a Docker container and scheduled with cron.  
+The script checks free disk space every minute, logs results to `disk_usage.log`, and issues warnings if free space falls below 20%.  
+This project demonstrates Python scripting, containerization with Docker, and automation via cron inside containers.
 
-Tech Stack
+---
 
-Python: psutil for disk monitoring, logging for log management.
-Docker: Containerizes the application for consistent deployment.
-GitHub Actions: Automates periodic execution and log collection.
+## 🚀 Features
 
-Setup
+- ✅ Monitors disk space using the `psutil` library
+- 📝 Logs disk usage with timestamps to `disk_usage.log`
+- ⚠️ Alerts when free space is below 20%
+- 📦 Runs in a Docker container for portability
+- ⏱ Scheduled to run every minute via cron
 
-Clone the Repository:git clone <repository-url>
-cd disk-monitor
+---
+
+## 🧰 Tech Stack
+
+- **Python**: Uses `psutil` for disk monitoring and `logging` for log handling  
+- **Docker**: Containerizes the application for isolated and consistent deployment  
+- **Cron**: Runs the monitoring script on a fixed schedule within the container
+
+---
+
+## ⚙️ Setup Instructions
+
+### 1. 🔁 Clone the Repository
+
+```bash
+git clone https://github.com/Sammm333/disk-monitoring-project.git
+cd disk-monitoring-project
+
+📄 Project Files
+Ensure the following files exist in the directory:
+
+.
+├── Dockerfile
+├── disk_monitor.py
+├── requirements.txt
+├── crontab
+└── README.md
 
 
-Install Dependencies:Ensure Docker is installed. The requirements.txt includes:psutil==5.9.5
+🐳 Build the Docker Image
+docker build -t disk-app-cron:0.0.1 .
 
+▶️ Run the Container
+Option A: Foreground (see output immediately)
 
-Build Docker Image:docker build -t disk-monitor .
+docker run --rm -it disk-app-cron:0.0.1
 
+Option B: Background Mode (detached)
 
-Run the Container:docker run --rm disk-monitor
+docker run -d --name disk-monitor disk-app-cron:0.0.1
 
-
-
-Usage
-
-The script checks the root disk (/) and logs results to disk_usage.log.
-Check logs in the project directory or GitHub Actions artifacts (if using CI/CD).
-Modify disk_monitor.py to adjust the threshold (default: 20%) or add notifications.
-
-CI/CD
-
-GitHub Actions workflow (.github/workflows/disk-monitor.yml) runs the script hourly.
-Logs are uploaded as artifacts in GitHub Actions.
-
-Future Enhancements
-
-Add Telegram/email notifications for alerts.
-Support monitoring multiple disks.
-Deploy to a specific server for real-world use.
-
-License
-MIT License
+Thanks :)
